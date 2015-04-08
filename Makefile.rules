@@ -12,7 +12,7 @@
 	  [ -s $@ ] || rm -f $@
 
 %.c: %.rl $(ALLDEP)
-	$(RAGEL) $(RAGELFLAGS) $< |$(RLGENCD) $(RLGENCODEFLAGS) -o $@
+	$(RAGEL) $(RAGELFLAGS) $<
 
 $(NAME): $(objs) $(ALLDEP)
 	$(LD) $(LDFLAGS) $(objs) -o $(NAME)

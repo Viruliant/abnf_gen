@@ -221,8 +221,8 @@
 
 		(ALPHA | DIGIT | "-")+ => {
 			DBG("rulename_scan-A");
-			last_rulename.s = tokstart;
-			last_rulename.len = tokend-tokstart;
+			last_rulename.s = ts;
+			last_rulename.len = te-ts;
 			fret;
 		};
 
@@ -441,7 +441,7 @@ int abnf_parse_abnf(FILE* in_stream, struct abnf_rule** rules, struct abnf_str o
 
 	%% write data noerror;
 
-	char *p, *pe, *buff, *tokstart, *tokend;
+	char *p, *pe, *buff, *ts, *te, *eof;
 	int cs, top, stack[50], act;
 	struct abnf_str last_rulename, last_str;
 	unsigned int last_val, last_val_mult;
@@ -490,8 +490,6 @@ int abnf_parse_abnf(FILE* in_stream, struct abnf_rule** rules, struct abnf_str o
 	for (last_rule = *rules; last_rule && last_rule->next; last_rule=last_rule->next);
 
 	%% write exec;
-
-	%% write eof;
 
 	if (cs < abnf_reader_first_final) {
 		fprintf(stderr, "origin:'%.*s', line: %u, cs: %d, rule parsing error at %d\n", origin.len, origin.s, line, cs, p-buff);
